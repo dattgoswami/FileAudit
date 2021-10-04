@@ -50,4 +50,4 @@ More test cases can be added about
 
 data.txt has first three entries as valid JSON and the last four entries are invalid JSON's.
 data.json contains all valid entries
-The test data is in folder dist/assets
+The test data is in folder dist/src/assets
