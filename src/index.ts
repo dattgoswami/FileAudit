@@ -4,7 +4,7 @@ import process_textfile from './utilities/process_textfile';
 
 const app = express();
 const port = 3000;
-const result = process_textfile('data.txt');
+
 //we want our endpoint api to use routes as a middleware
 app.use('/api', routes);
 
