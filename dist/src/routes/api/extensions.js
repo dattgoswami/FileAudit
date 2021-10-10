@@ -47,11 +47,11 @@ var extensions = express_1.default.Router();
 //this is for the case when data is in a text file and we need to parse it line by line
 //here the data is being read from file src/assets/data.txt
 extensions.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var result_received;
     return __generator(this, function (_a) {
-        result_received = (0, process_textfile_1.default)('data.txt');
-        console.log(result_received);
-        res.send(result_received);
+        (0, process_textfile_1.default)('data.txt', function (result_received) {
+            console.log(result_received);
+            res.send(result_received);
+        });
         return [2 /*return*/];
     });
 }); });

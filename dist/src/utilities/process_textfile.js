@@ -18,55 +18,61 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+var fs = __importStar(require("fs"));
 var path = __importStar(require("path"));
+var readline_1 = __importDefault(require("readline"));
 // import { Observable } from 'rxjs';
-var filenameSet = new Set();
-function process_textfile(filename) {
+function process_textfile(filename, callback) {
+    var filenameSet = new Set();
     var resultExtensionCounter = {};
     var extensionCounterMap = new Map();
     //reference https://stackoverflow.com/questions/6156501/read-a-file-one-line-at-a-time-in-node-js
     var filePath = '../assets/' + filename;
-    var lineReader = require('readline').createInterface({
-        input: require('fs').createReadStream(path.join(__dirname, filePath))
+    var lineReader = readline_1.default.createInterface({
+        input: fs.createReadStream(path.join(__dirname, filePath))
     });
     lineReader.on('line', function (line) {
         if (checkJSONValidity(line)) {
             var lineJSON = JSON.parse(line);
-            //   filenameSet.add(lineJSON.nm);
-            process_line(lineJSON);
+            filenameSet.add(lineJSON.nm);
+            // process_line(lineJSON);
         }
     });
-    filenameSet.forEach(function (filename) {
-        var filenameExtension = filename.split('.');
-        if (filenameExtension[0].length != 0 && filenameExtension[1].length != 0) {
-            if (!extensionCounterMap.has(filenameExtension[1])) {
-                extensionCounterMap.set(filenameExtension[1], 1);
+    lineReader.on('close', function () {
+        filenameSet.forEach(function (filename) {
+            var filenameExtension = filename.split('.');
+            var fileName = filenameExtension[0];
+            var fileExt = filenameExtension[1];
+            if (fileExt.length !== 0 && fileName.length !== 0) {
+                if (!extensionCounterMap.has(fileExt)) {
+                    extensionCounterMap.set(fileExt, 1);
+                }
+                else {
+                    var count = extensionCounterMap.get(fileExt);
+                    count++;
+                    extensionCounterMap.set(fileExt, count);
+                }
             }
-            else {
-                var count = extensionCounterMap.get(filenameExtension[1]);
-                count++;
-                extensionCounterMap.set(filenameExtension[1], count);
-            }
-        }
+        });
+        extensionCounterMap.forEach(function (value, key) {
+            resultExtensionCounter[key] = value;
+        });
+        callback(resultExtensionCounter);
     });
-    extensionCounterMap.forEach(function (value, key) {
-        resultExtensionCounter[key] = value;
-    });
-    return resultExtensionCounter;
-}
-function process_line(lineJSON) {
-    filenameSet.add(lineJSON.nm);
 }
 //reference https://www.codegrepper.com/code-examples/javascript/node+js+to+check+if+content+of+file+is+a+valid+json
 function checkJSONValidity(str) {
     try {
         JSON.parse(str);
+        return true;
     }
     catch (e) {
         return false;
     }
-    return true;
 }
 // module.exports = checkJSONValidity;
 exports.default = process_textfile;
