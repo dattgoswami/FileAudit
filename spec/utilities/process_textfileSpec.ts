@@ -2,23 +2,20 @@ import process_textfile from '../../src/utilities/process_textfile';
 // import checkJSONValidity from '../../src/utilities/process_textfile';
 
 describe('test suite for function process textfile', () => {
-  it('should return specific result when called', () => {
+  it('should return specific result when called', async () => {
     const compareTo: any = { ext: 1, pdf: 1 };
-    process_textfile('data.txt', function (result_received: any) {
-      expect(result_received).toEqual(compareTo);
-    });
+    const result_received = await process_textfile('data.txt');
+    expect(result_received).toEqual(compareTo);
   });
-  it('should not return any response when the filename is not specified', () => {
+  it('should not return any response when the filename is not specified', async () => {
     const compareTo: any = {};
-    process_textfile('test2_data.txt', function (result_received: any) {
-      expect(result_received).toEqual(compareTo);
-    });
+    const result_received = await process_textfile('test2_data.txt');
+    expect(result_received).toEqual(compareTo);
   });
-  it('should not return any response when the extension is not specified', () => {
+  it('should not return any response when the extension is not specified', async () => {
     const compareTo: any = {};
-    process_textfile('test3_data.txt', function (result_received: any) {
-      expect(result_received).toEqual(compareTo);
-    });
+    const result_received = await process_textfile('test3_data.txt');
+    expect(result_received).toEqual(compareTo);
   });
 });
 // describe('test suite for function to check if the json is valid or not', () => {

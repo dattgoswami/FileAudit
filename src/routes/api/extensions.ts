@@ -8,13 +8,12 @@ const extensions = express.Router();
 //this is for the case when data is in a text file and we need to parse it line by line
 //here the data is being read from file src/assets/data.txt
 extensions.get('/', async (req: express.Request, res: express.Response) => {
-  process_textfile('data.txt', function (result_received: any) {
-    console.log(result_received);
-    res.send(result_received);
-  });
+  const result_received = await process_textfile('data.txt');
+  console.log(result_received);
+  res.send(result_received);
 });
 
-// this is for the case when data is in a json format
+// this is for the case when data is in json format
 //we are reading it from the file src/assets/data.json
 extensions.get('/json', async (req: express.Request, res: express.Response) => {
   const result_json = process_json(json);
