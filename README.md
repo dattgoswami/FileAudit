@@ -1,4 +1,4 @@
-# Liquidation Monitor
+# File Audit
 
 The task of this assignment is to build a json parser that gets the extensions and number of unique filenames with those extensions.
 
